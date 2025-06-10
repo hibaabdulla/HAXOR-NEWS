@@ -8,21 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @ObservedObject var networkManager = NetworkManager()
+    
     var body: some View {
-        List(posts) { post in Text(post.title)
-            
+        NavigationView {
+            List(networkManager.posts) { post in
+                HStack {
+                    Text(String(post.points))
+                    Text(post.title)
+                }
+            }
+            .navigationTitle("HAXOR NEWS")
+        }
+        .onAppear {
+            self.networkManager.fetchAPI()
         }
     }
 }
-
-struct Post: Identifiable {
-    let id: String
-    let title: String
-}
-
-let posts = [Post(id: "1", title: "Hi"),
-             Post(id: "2", title: "Hlo"),
-             Post(id: "3", title: "Koo")]
 
 #Preview {
     ContentView()
